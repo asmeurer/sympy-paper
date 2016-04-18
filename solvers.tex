@@ -1,0 +1,127 @@
+%% Solvers in SymPy
+
+
+SymPy has a solvers module to solve equations symbolically. There are two
+submodules to solve algebraic equations in SymPy, referred to as old solve
+i.e. \texttt{solve} and new solve i.e. \texttt{solveset}. Solveset is
+introduced with several design changes with respect to old \texttt{solve} to
+resolve the issues with old \texttt{solve}, for example old \texttt{solve}'s
+input API has many flags which are not needed and they make it hard for the
+user and the developers to work on solvers. In contrast to old solve, the
+\texttt{solveset} has a clean input API, It only asks for the much needed
+information from the user, following are the function signatures of old and new
+solve:
+
+\begin{verbatim}
+solve(f, *symbols, **flags)  # old solve
+solveset(f, symbol, domain)  # new solve
+\end{verbatim}
+
+The old \texttt{solve} has an inconsistent output API for various types of
+inputs, whereas the \texttt{solveset} has a canonical output API which is
+achieved using sets. It can consistently return various types of solutions.
+
+\begin{itemize}
+\item Single solution
+\end{itemize}
+\begin{verbatim}
+>>> solveset(x - 1)
+>>> {1}
+\end{verbatim}
+
+\begin{itemize}
+\item Finite set of solution, quadratic equation
+\end{itemize}
+\begin{verbatim}
+>>> solveset(x**2 - pi**2, x)
+{-pi, pi}
+\end{verbatim}
+
+\begin{itemize}
+\item No Solution
+\end{itemize}
+\begin{verbatim}
+>>> solveset(1, x)
+EmptySet()
+\end{verbatim}
+
+\begin{itemize}
+\item Interval of solution
+\end{itemize}
+\begin{verbatim}
+>>> solveset(x**2 - 3 > 0, x, domain=S.Reals)
+(-oo, -sqrt(3)) U (sqrt(3), oo)
+\end{verbatim}
+
+\begin{itemize}
+\item Infinitely many solutions
+\end{itemize}
+\begin{verbatim}
+>>> solveset(sin(x) - 1, x, domain=S.Reals)
+ImageSet(Lambda(_n, 2*_n*pi + pi/2), Integers())
+>>> solveset(x - x, x, domain=S.Reals)
+(-oo, oo)
+>>> solveset(x - x, x, domain=S.Complexes)
+S.Complexes
+\end{verbatim}
+
+\begin{itemize}
+\item Linear system: finite and infinite solution for determined, under
+determined and over determined problems.
+\end{itemize}
+\begin{verbatim}
+>>> A = Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 10]])
+>>> b = Matrix([3, 6, 9])
+>>> linsolve((A, b), x, y, z)
+{(−1,2,0)}
+>>> linsolve(Matrix(([1, 1, 1, 1], [1, 1, 2, 3])), (x, y, z))
+{(-y - 1, y, 2)}
+\end{verbatim}
+
+The new solve i.e. \textbf{solveset} is under active development and is a
+planned replacement for \textbf{solve}, Hence there are some features which are
+implemented in solve and is not yet implemented in solveset. The table below
+show the current state of old and new solve.
+
+\hfill
+
+\begin{tabular}{ |p{4cm}|p{3cm}|p{3cm}|  }
+\hline
+\multicolumn{3}{|c|}{Solveset vs Solve} \\
+\hline
+Feature& solve &solveset \\
+\hline
+Consistent Output API & No & Yes \\
+Consistent Input API & No & Yes \\
+Univariate & Yes & Yes\\
+Linear System& Yes & Yes (linsolve) \\
+Non Linear System& Yes & Not yet \\
+Transcendental& Yes & Not yet \\
+\hline
+\end{tabular}
+
+\hfill \break
+
+Below are some of the examples of old \textbf{solve} :
+
+\begin{itemize}
+\item Non Linear (multivariate) System of Equation: Intersection of a circle
+and a parabola.
+\end{itemize}
+\begin{verbatim}
+>>> solve([x**2 + y**2 - 16, 4*x - y**2 + 6], x, y)
+[(-2 + sqrt(14), -sqrt(-2 + 4*sqrt(14))),
+ (-2 + sqrt(14), sqrt(-2 + 4*sqrt(14))),
+ (-sqrt(14) - 2, -I*sqrt(2 + 4*sqrt(14))),
+ (-sqrt(14) - 2, I*sqrt(2 + 4*sqrt(14)))]
+\end{verbatim}
+
+\begin{itemize}
+\item Transcendental Equation
+\end{itemize}
+\begin{verbatim}
+>>> solve(x + log(x))**2 - 5*(x + log(x)) + 6, x)
+[LambertW(exp(2)), LambertW(exp(3))]
+>>> solve(x**3 + exp(x))
+[-3*LambertW((-1)**(2/3)/3)]
+\end{verbatim}
