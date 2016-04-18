@@ -1,5 +1,74 @@
 % Features to discuss in-depth:
 
+SymPy has an extensive feature set that encompasses too much to cover
+in-depth here. Bedrock areas, such a Calculus, receive their own sub-sections
+below. Additionally, Table \ref{features-table} describes other capabilities
+present in the SymPy code base. This gives a sampling from the breadth of
+topics and application domains that SymPy services.
+
+\begin{table}
+\label{features-table}
+\caption{SymPy Features and Descriptions}
+\begin{tabular}[htbc]{|l|p{0.7\linewidth}|}
+\hline
+\textbf{Feature} & \textbf{Description} \\
+\hline
+Discrete Math & Summations, products, binomial coefficients,
+    prime number tools, integer factorization, Diophantine equation solving, and
+    boolean logic representation, equivalence testing, and inference.\\
+Concrete Math & Tools for determining whether summation and product
+    expressions are convergent, absolutely convergent, hypergeometric, and
+    other properties. May also compute Gosper's normal form
+    \cite{petkovvsek1996bak} for two univariate polynomials.\\
+Plotting & Hooks for visualizing expressions via matplotlib \cite{Hunter:2007}
+    or as text drawings when lacking a graphical back-end.\\
+Geometry & Allows the creation of 2D geometrical entities,
+    such as lines and circles. Enables queries on these entities, including
+    asking the area of an ellipse, checking for collinearity of a set of
+    points, or finding the intersection between two lines.\\
+Statistics & Support for a random variable type as well as the ability to
+    declare this variable from prebuilt distribution functions such as
+    Normal, Exponential, Coin, Die, and other custom distributions.\\
+Polynomials & Computes polynomial algebras over various coefficient domains
+    ranging from the simple (e.g. polynomial division) to the advanced
+    (e.g. Gr\"obner bases \cite{adams1994introduction} and multivariate
+    factorization over algebraic number domains).\\
+Sets & Representations of empty, finite, and infinite sets. This includes
+    special sets such as for all natural, integer, and complex numbers.\\
+Series & Implements series expansion, sequences, and limit of sequences.
+    This includes special series, such as Fourier and power series.\\
+Vectors & Provides basic vector math and differential calculus with respect
+    to 3D Cartesian coordinate systems.\\
+Matrices & Tools for creating matrices of symbols and expressions.
+    This is capable of both sparse and dense representations and performing
+    symbolic linear algebraic operations (e.g. inversion and factorization).\\
+Combinatorics \& Group Theory & Implements permutations, combinations,
+    partitions, subsets,
+    various permutation groups (such as polyhedral, Rubik, symmetric,
+    and others), Gray codes \cite{Nijenhuis1978combinatorial},
+    and Prufer sequences \cite{biggs1976graph}.\\
+Code Generation & Enables generation of compilable and executable
+    code in a variety of different programming languages directly from
+    expressions. Target languages include C, Fortran, Julia, JavaScript,
+    Mathematica, Matlab and Octave, Python, and Theano.\\
+Tensors & Symbolic manipulation of indexed objects.\\
+Lie Algebras & Represents Lie algebras and root systems.\\
+Cryptography & Represents block and stream ciphers, including
+    shift, Affine, substitution, Vigenere's, Hill's, bifid, RSA, Kid RSA,
+    linear-feedback shift registers, and Elgamal encryption\\
+Special Functions & Implements a number of well known special functions,
+    including Dirac delta, Gamma, Beta, Gauss error functions, Fresnel
+    integrals, Exponential integrals, Logarithmic integrals, Trigonometric
+    integrals, Bessel, Hankel, Airy, B-spline, Riemann Zeta, Dirichlet eta,
+    polylogarithm, Lerch transcendent, hypergeometric, elliptic integrals,
+    Mathieu, Jacobi polynomials, Gegenbauer polynomial, Chebyshev polynomial,
+    Legendre polynomial, Hermite polynomial, Laguerre polynomial, and
+    spherical harmonic functions.\\
+\hline
+\end{tabular}
+\end{table}
+
+
 % Basic operations (the core)
 \subsection{Basic Operations}
 
