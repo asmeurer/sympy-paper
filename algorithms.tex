@@ -15,6 +15,76 @@
 
 \subsection{The Gruntz Algorithm}
 
+The limit module implements the Gruntz algorithm
+\cite{gruntz1996computing}.
+
+Examples:
+\begin{verbatim}
+In [1]: limit(sin(x)/x, x, 0)
+Out[1]: 1
+
+In [2]: limit((2*E**((1-cos(x))/sin(x))-1)**(sinh(x)/atan(x)**2), x, 0)
+Out[2]: E
+\end{verbatim}
+
+\subsubsection{Details}
+
+We first define comparability classes by calculating $L$:
+\begin{equation}
+L\equiv \lim_{x\to\infty} {\log |f(x)| \over \log |g(x)|}
+\end{equation}
+And then we define the $<$, $>$ and $\sim$ operations as follows: $f>g$ when
+$L=\pm\infty$ ($f$ is more rapidly varying than $g$, i.e. $f$ goes to $\infty$
+or $0$ faster than $g$, $f$ is greater than any power of $g$), $f<g$ when $L=0$
+($f$ is less rapidly varying than $g$) and $f\sim g$ when $L\neq 0,\pm\infty$
+(both $f$ and $g$ are bounded from above and below by suitable integral powers
+of the other).
+
+Examples:
+$$2 < x < e^x < e^{x^2} < e^{e^x}$$
+$$2\sim 3\sim -5$$
+$$x\sim x^2\sim x^3\sim {1\over x}\sim x^m\sim -x$$
+$$e^x\sim e^{-x}\sim e^{2x}\sim e^{x+e^{-x}}$$
+$$f(x)\sim{1\over f(x)}$$
+
+The Gruntz algorithm, on an example:
+$$f(x) = e^{x+2e^{-x}} - e^x + {1\over x}$$
+$$\lim_{x\to\infty} f(x) = ?$$
+
+Strategy:
+mrv set: the set of most rapidly varying subexpressions
+$\{e^x, e^{-x}, e^{x+2e^{-x}}\}$, the same comparability class
+Take an item $\omega$ from mrv, converging to 0 at infinity. Here
+$\omega=e^{-x}$. If not present in the mrv set, use the relation
+$f(x)\sim {1\over f(x)}$.
+
+Rewrite the mrv set using $\omega$: $\{{1\over\omega}, \omega,
+{1\over\omega}e^{2\omega}\}$, substitute back into $f(x)$ and expand in
+$\omega$:
+$$f(x) = {1\over x}-{1\over\omega}+{1\over\omega}e^{2\omega}
+    = 2+{1\over x} + 2\omega + O(\omega^2)$$
+
+The core idea of the algorithm: $\omega$ is from the mrv set, so in the limit
+$\omega\to0$:
+$$f(x) = {1\over x}-{1\over\omega}+{1\over\omega}e^{2\omega}
+    = 2+{1\over x} + 2\omega + O(\omega^2)
+    \to 2 + {1\over x}$$
+
+We iterate until we get just a number, the final limit. Gruntz proved this
+algorithm always works and converges in his Ph.D. thesis
+\cite{gruntz1996computing}.
+
+Generally:
+$$ f(x) = \underbrace{O\left({1\over \omega^3}\right)}_\infty
+    + \underbrace{C_{-2}(x)\over \omega^2}_\infty
+    + \underbrace{C_{-1}(x)\over \omega}_\infty
+    + {C_{0}(x)}
+    + \underbrace{C_{1}(x)\omega}_0
+    + \underbrace{O(\omega^2)}_0
+$$
+we look at the lowest power of $\omega$. The limit is one of: $0$,
+$\lim_{x\to\infty} C_0(x)$, $\infty$.
+
 \subsection{Logic}
 
 \subsection{Other}
