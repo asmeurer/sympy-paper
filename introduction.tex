@@ -1,2 +1,40 @@
+SymPy is a full featured computer algebra system (CAS) written in the Python
+programming language. It is open source, licensed under the extremely
+permissive 3-clause BSD license, which allows anyone to reuse SymPy or its source code,
+even for commercial purposes. SymPy was started by Ond\v{r}ej \v{C}ert\'{\i}k
+in 2005, and it has since grown into a large open source project, with over
+500 contributors.
+% citation?
 
+SymPy is written entirely in the Python programming language,
+% cite Python?
+which is also the language used to interact with it, both programmatically and
+interactively. Python is a popular dynamically typed programming language that
+has a focus on ease of use and readability. Unlike many CASs, SymPy does not
+invent its own programming language. We rather take the approach that Python
+is already a well-designed programming language, built by expert language
+designers, something which the majority of SymPy developers are not. Python is
+also a very popular language for scientific computing and data science, with a
+wide range of useful libraries.
+% Cite numpy, scipy, pandas
+% We could also cite
+% https://stackoverflow.com/research/developer-survey-2016#most-popular-technologies-per-occupation
 
+SymPy is designed with a strong focus that it be usable as a library. This
+means that extensibility is important in its API design. This is also one of
+the reasons SymPy makes no attempt to extend the Python language itself. The
+goal is for users of SymPy to be able to import SymPy alongside other Python
+libraries in their workflow, whether that is an interactive workflow or
+programmatic use as part of a larger library. This does have some downsides;
+for instance, unlike many popular CASs, all variables in SymPy must be defined
+before they are used (Python does not provide a mechanism to automatically
+declare variables). This is a minor inconvenience for interactive use, but we
+consider it to be good practice for any reproducible work, and it aligns with
+the philosophy of Python, ``explicit is better than implicit.''
+% cite https://www.python.org/dev/peps/pep-0020/
+
+SymPy does not have a built in graphical user interface (GUI), however, when
+used in the Jupyter Notebook
+% citation
+SymPy expressions will pretty print using MathJax.
+% citation

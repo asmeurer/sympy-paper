@@ -1,0 +1,84 @@
+%% Sets
+
+SymPy supports representation of a wide variety of set, this is achieved by
+first defining abstract representation for a smaller number of atomic set
+classes and then combining and transforming them using various set operations.
+
+Each of the set class inherits from the base Set class and defines
+rules to check membership of a SymPy object, to calculate union, intersection,
+set different. In cases we are not able to evaluate these
+operations to atomic set classes they are represented as abstract unevaluated
+objects.
+
+
+\begin{itemize}
+
+    % Description of Empty Set sounds too obvious, not sure if we need to keep
+    % it.
+    \item \textbf{Empty Set}: Nothing is a member of Empty Set. Union with
+another set returns the other set and intersection leads to an Empty Set.
+
+    \item \textbf{Universal Set}: Everything is a member of Universal Set.
+Union of Universal Set with any set gives Universal Set and intersection leads
+to the other set itself.
+
+    \item \textbf{Finite Set} is functionally equivalent to python's set
+object. Its members can be any object including strings and other sets
+themselves.
+
+    \item \textfb{Range} implements a range of integers and is defined by
+specifying a start value, an end value and a step size. Range is functionally
+equivalent to python's range except the fact that it accepts infinity at end
+points allowing us to represent infinite ranges.
+
+
+    \item \textbf{Real Interval} is specified by giving the start and end point
+and specifying if it is open or closed in these respective ends. The set of
+real numbers is represented as a special case of a real interval where the
+start point is negative infinite and the end point is positive infinite.
+
+\end{itemize}
+
+
+%% Operations
+
+Other than unevaluated classes of of Union, Intersection and Set Difference
+operations, we have following set classes.
+
+\begin{itemize}
+
+    \item Product Set abstractly defines the Cartesian product of two or more
+sets. Product Set is useful when representing higher dimensional spaces. For
+example to represent a three dimensional space we simple take the Cartesian
+product of three Real sets.
+
+    \item Image Set represents the set of image a function when applied to a
+particular set. In notation Image Set of a function F w.r.t a set S is \{ F(x)
+| x \in S \} In particular we use Image Set to represent the set of infinite
+solutions from trigonometric equations.
+
+
+    \item Condition Set represents subset of a set who's members which
+satisfies a particular condition. In notation Condition Set of set S w.r.t to a
+condition H is \{x | H(x), x \in S \}. We use Condition Set to represent the
+set of solutions of an equation or an inequality where the equation or the
+inequality is the condition and the set is the domain in which we aim to find
+the solution.
+
+
+\end{itemize}
+
+
+
+
+
+%% Explaining it later because it is a special case of Image Set rather being
+%% something atomic
+
+    \textbf{Complex Region}
+
+%% Representations achievable through application of Operations on atomic set
+%% types mentioned above.
+
+
+%% Special Cases

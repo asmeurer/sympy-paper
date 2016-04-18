@@ -30,6 +30,7 @@ creating a new object.
 The reactivity of Mathematica allows for a lazy updating of any references
 to that data structure.
 
+% * comparison with Mathematica: commutativity, associative expressions, one-identity. Advantage of SymPy: multiplicative commutativity defined on symbols.
 % Products and commutativity
 
 Products in Mathematica are determined by some builtin node types,
@@ -51,19 +52,84 @@ type.
 Regarding associative expressions,
 SymPy handles associativity by making associative expressions inherit the
 class \texttt{AssocOp},
-while Mathematica specifies the \texttt{Flat} attribute on the expression type.
+while Mathematica specifies the \texttt{Flat}\cite{WolframRefFlat} attribute on the expression type.
+
+% One identity
+
 
 % Pattern matching
 
+Mathematica relies heavily on pattern matching:
+even the so-called equivalent of function declaration is in reality
+the definition of a pattern matching generating an expression tree transformation
+on input expressions.
+%
+Mathematica's pattern matching is sensitive to associative\cite{WolframRefFlat}, commutative\cite{WolframRefOrderless},
+and one-identity\cite{WolframRefOneIdentity} properties of its expression tree nodes\cite{WolframRefFlatAndOrderlessFunctions}.
+%
+SymPy has various ways to perform pattern matching. 
+All of them play a lesser role in the CAS than in Mathematica.
+looks less mature than Mathematica's,
 
 %% TODO list:
 % * comparison with Mathematica: MatrixExp, product not always commutative, type inheritance (polymorphism) and advantage in unifying the product symbol * for symbols and matrices, pattern matching vs. single dispatch.
-% * comparison with Mathematica: commutativity, associative expressions, one-identity. Advantage of SymPy: multiplicative commutativity defined on symbols.
+
+% Type inheritance and polymorphism
+
+Unlike SymPy, Mathematica does not support type inheritance or polymorphism\cite{Fateman1992}.
+% cite examples of class inheritance in SymPy:
+% 
+SymPy relies heavily on class inheritance, but for the most part,
+class inheritance is used to make sure that SymPy objects inherit the proper
+methods and implement the basic hashing system.
+Associativity of expressions can be achieved by inheriting the class \texttt{AssocOp},
+which may appear a more cumbersome operation than Mathematica's attribute setting.
+%There are also cases where inheritance is used to extend the mathematical meaning of an expression.
+
+% Matrices
+
+Matrices in SymPy are types on their own.
+In Mathematica, nested lists are interpreted as matrices whenever the sublists
+have the same length.
+The main difference to SymPy is that ordinary operators and functions 
+do not get generalized the same way as used in traditional mathematics.
+Using the standard multiplication in Mathematica performs an elementwise
+product, this is compatible with Mathematica's convention of commutativity of
+\texttt{Times} nodes. 
+Matrix product is expressed by the \textit{dot} operator, 
+or the \texttt{Dot} node.
+The same is true for the other operators, and even functions,
+most notably calling the exponential function \texttt{Exp} on a matrix 
+returns an elementwise exponentiation of its elements.
+The real matrix exponentiationl is available through the \texttt{MatrixExp}
+function.
+
 % * comparison with Mathematica: avoid misspelling variables through forced declaration (check that you can't do it in Mathematica).
 % * evaluate=False vs HoldForm
+
+Unevaluated expressions can be achieved in various ways,
+most commonly with the \texttt{HoldForm} or \texttt{Hold} nodes,
+that block the evaluation of subnodes by the parser.
+Note that such a node cannot be expressed in Python, because of greedy evaluation.
+Whenever needed in SymPy, it is necessary to add the parameter \texttt{evaluate=False}
+to all subnodes, or put the input expression in a string.
+
 % * comparison with Mathematica: == is structural equality, not 
+
+The operator == returns a boolean whenever it is able to immediately evaluate
+the truthness of the equality, otherwise it returns an \texttt{Equal} expression.
+In SymPy == means structural equality and is always guaranteed to return a
+boolean expression.
+To express an equality in SymPy it is necessary to explicitly construct the 
+\texttt{Equality} class.
+
 % * comparison with Mathematica: polynomial module.
 % * comparison with Mathematica: space is product, ** vs ^
+
+SymPy, in accordance with Python and unlike the usual programming convention,
+uses ** to express the power operator, while Mathematica uses the more 
+common ^.
+
 % * comparison with Mathematica: ( ) is Sequence, functions are generally uppercase.
 % * comparsion with Mathematica: table of comparison?
 % * comparison with Mathematica: Wolfram language has loads of operator overloading, functional paradigm.

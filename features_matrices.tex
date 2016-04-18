@@ -1,0 +1,97 @@
+
+
+SymPy supports matrices with symbolic expressions as elements. There are two
+types of matrices, Mutable and Immutable. Mutable classes are the default in
+SymPy as mutability is important for performance, but it means that standard
+matrices can not interact well with the rest of SymPy. This is because the
+Basic object, from which most SymPy classes inherit, is immutable.
+
+Immutable matrix classes inherit from Basic and can thus interact more
+naturally with the rest of SymPy.
+
+\begin{verbatim}
+In [1]: from sympy import Matrix, symbols, MatrixSymbol
+
+In [2]: x, y = symbols('x y', positive=True)
+
+In [3]: t = Matrix(2, 2, [x, x + y, y, x])
+
+In [4]: t
+
+Out[4]:
+Matrix([
+[    x, x + y],
+[    y,     x]])
+
+In [5]: t[0, 1] = y
+
+In [6]: t
+Out[6]:
+Matrix([
+[x, y],
+[y, x]])
+\end{verbatim}
+
+All SymPy matrix types can do linear algebra including matrix addition,
+multiplication, exponentiation, computing determinant, solving linear
+systems and computing inverses using LU decomposition, LDL decomposition,
+Gauss-Jordan elimination, Cholesky decomposition, Moore-Penrose pseudoinverse,
+adjugate matrix.
+
+Eigenvalues are computed symbolically as well. Eigenvalues are computed by
+generating the characteristic polynomial using the Berkowitz algorithm and
+then solving it using polynomial routines. Diagonalizable matrices can be
+diagonalized first to compute the eigenvalues.
+
+\begin{verbatim}
+In [10]: t.eigenvals()
+Out[10]: {x - y: 1, x + y: 1}
+\end{verbatim}
+
+Internally these matrices store the elements as a list making it a dense
+representation. For storing sparse matrices, SparseMatrix and 
+ImmutableSparseMatrix classes can be used. Sparse matrix classes store
+the elements in Dictionary of Keys (DoK) format.
+
+SymPy also supports matrices with unknown dimension values. MatrixSymbol
+represents a matrix with dimensions \verb|m, n| where \verb|m| and \verb|n|
+can be symbols or integers. Matrix addition and multiplication, scalar
+operations, matrix inverse and transpose are stored symbolically as
+matrix expressions. Mutable matrices are converted to corresponding immutable
+types before interacting with matrix expressions
+
+\begin{verbatim}
+In [11]: m, n, p = symbols("m, n, p", integer=True)
+
+In [12]: r, s = MatrixSymbol("r", m, n), MatrixSymbol("s", n, p)
+
+In [13]: u = r * s + 2*MatrixSymbol("t", m, p)
+
+In [14]: u.shape
+Out[14]: (m, p)
+
+In [15]: u[0, 1]
+Out[15]: 2*t[0, 1] + Sum(r[0, _k]*s[_k, 1], (_k, 0, n - 1))
+\end{verbatim}
+
+Block matrices are also supported in SymPy. BlockMatrix elements can be
+any matrix expression which includes immutable matrices, matrix symbols and
+block matrices. All functionalities of matrix expressions are also present in
+BlockMatrix.
+
+
+\begin{verbatim}
+>>> from sympy import (MatrixSymbol, BlockMatrix, symbols,
+...     Identity, ZeroMatrix, block_collapse)
+>>> n, m, l = symbols('n m l')
+>>> X = MatrixSymbol('X', n, n)
+>>> Y = MatrixSymbol('Y', m ,m)
+>>> Z = MatrixSymbol('Z', n, m)
+>>> B = BlockMatrix([[X, Z], [ZeroMatrix(m,n), Y]])
+>>> print(B)
+Matrix([
+[X, Z],
+[0, Y]])
+>>> print(B[0, 0])
+X[0, 0]
+\end{verbatim}
