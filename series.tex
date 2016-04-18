@@ -1,0 +1,76 @@
+% Series expansion (Differentiate between the two approaches being used)
+\subsubsection{Series Expansion}
+
+SymPy is able to calculate the symbolic series expansion of an arbitrary series
+or expression involving elementary and special functions and multiple
+variables. For this it has two different implementations.
+
+The first approach stores a series as a core object. Each function has its
+specific implementation of its expansion. It is able to evaluate the Puiseux
+series expansion about any point.
+
+\begin{verbatim}
+>>> from sympy import *
+>>> x, y = symbols('x, y')
+>>> series(sin(x+y) + cos(x*y), x, 0, 2)
+1 + sin(y) + x*cos(y) + O(x**2)
+\end{verbatim}
+
+The newer and much faster approach called Ring Series makes use of the
+observation that a truncated Taylor series, is in fact a polynomial.
+Ring Series uses the efficient representation and operations of sparse
+polynomials. The choice of sparse polynomials is deliberate as it performs
+well in a wider range of cases than a dense representation. Ring Series gives 
+the user the freedom to choose the type of coefficients he wants to have in
+his series, allowing the use of faster operations on certain types.
+
+For this, several low level methods for expansion of elementary functions are
+implemented using semi-numerical algorithms. All these support Puiseux series
+expansion.
+
+\begin{verbatim}
+>>> from sympy.polys.ring_series import rs_sin
+>>> R, x = ring('x', QQ)
+>>> rs_sin(x**2 + x, x, 5)
+-1/2*x**4 - 1/6*x**3 + x**2 + x
+\end{verbatim}
+
+The function \texttt{rs\_series} makes use of these elementary functions to
+intelligently expand an arbitrary SymPy expression. Currently it only supports
+expansion about 0 and is under active development. Typical speedup over
+the older SymPy implementation is in the range of 20-100x with larger
+speedup observed with larger series.
+
+\begin{verbatim}
+>>> from sympy.polys.ring_series import rs_series
+>>> rs_series(sin(a + b), a, 4)
+-1/2*(sin(b))*a**2 + (sin(b)) - 1/6*(cos(b))*a**3 + (cos(b))*a
+\end{verbatim}
+
+\subsubsection{Formal Power Series}
+
+SymPy can be used for computing the Formal Power Series of a function.
+The implementation is based on the algorithm described in the paper on Formal Power Series\cite{Gruntz93formalpower}.
+The advantage of this approach is that an explicit formula for the coefficients
+of the series expansion is generated rather than just computing a few terms.
+
+\begin{verbatim}
+>>> f = fps(sin(x), x, x0=0)
+>>> f.truncate(6)
+x - x**3/6 + x**5/120 + O(x**6)
+>>> f[15]
+-x**15/1307674368000
+\end{verbatim}
+
+\subsubsection{Fourier Series}
+
+SymPy provides functionality to compute Fourier Series of a function using
+the \texttt{fourier\_series} function. Under the hood it just computes $a0$, $an$, $bn$ using
+standard integration formulas.
+
+\begin{verbatim}
+>>> L = symbols('L')
+>>> f = fourier_series(2 * (Heaviside(x/L) - Heaviside(x/L - 1)) - 1, (x, 0, 2*L))
+>>> f.truncate(3)
+4*sin(pi*x/L)/pi + 4*sin(3*pi*x/L)/(3*pi) + 4*sin(5*pi*x/L)/(5*pi)
+\end{verbatim}
