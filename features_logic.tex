@@ -1,0 +1,75 @@
+
+SymPy supports construction and manipulation of boolean expressions
+through the \texttt{logic} module. SymPy symbols can be used as 
+propositional variables and also be substituted as \texttt{True} 
+or \texttt{False}. A good number of manipulation features for boolean 
+expressions have been implemented in the \texttt{logic} module.
+
+\subsubsection{Constructing boolean expressions}
+
+A boolean variable can be declared as a SymPy symbol. Python
+operators \&, \textbar  and \textasciitilde are overloaded for logical \texttt{And}, 
+\texttt{Or} and \texttt{negate}. Several others like \texttt{Xor},
+\texttt{Implies} can be constructed with \^{}, \textgreater\textgreater respectively.  
+The above are just a shorthand, expressions can also be constructed
+by directly calling \texttt{And()}, \texttt{Or()}, \texttt{Not()},
+\texttt{Xor()}, \texttt{Nand()}, \texttt{Nor()}, etc.
+The boolean symbols can also be substituted \texttt{True} or \texttt{False}
+
+\begin{verbatim}
+>>> e = (x & y) | z
+>>> e.subs({x: True, y: True, z: False})
+True
+\end{verbatim}
+
+\subsubsection{CNF and DNF}
+
+Any boolean expression can be converted to conjunctive normal 
+form, disjunctive normal form and negation normal form. The 
+API also permits to check if a boolean expression is in any 
+of the above mentioned forms.
+
+\begin{verbatim}
+>>> to_cnf((A & B) | C)
+And(Or(A, C), Or(B, C))
+>>> to_dnf(A & (B | C))
+Or(And(A, B), And(A, C))
+>>> is_cnf((x | y) & z)
+True
+>>> is_dnf((x & y) | z) 
+True
+\end{verbatim}
+
+\subsubsection{Simplification and Equivalence}
+
+The module supports simplification of given boolean expression
+by making deductions on it. Equivalence of two expressions can
+also be checked. If so, it is possible to return the mapping of 
+variables of two expressions so as to represent the 
+same logical behaviour.
+
+\begin{verbatim}
+>>> e = a & (~a | ~b) & (a | c)
+>>> simplify(e)
+And(Not(b), a)
+>>> e1 = a & (b | c)
+>>> e2 = (x & y) | (x & z)
+>>> bool_map(e1, e2)
+(And(Or(b, c), a), {b: y, a: x, c: z})
+\end{verbatim}
+
+\subsubsection{SAT solving}
+
+The module also supports satisfiability checking of a given
+boolean expression. If satisfiable, it is possible to return 
+a model for which the expression is satisfiable. The API also
+supports returning all possible models. The SAT solver has 
+a clause learning DPLL algorithm implemented with watch 
+literal scheme and VSIDS heuristic\cite{moskewicz2008method}.
+
+\begin{verbatim}
+>>> satisfiable(a & (~a | b) & (~b | c) & ~c)
+False
+>>> satisfiable(a & (~a | b) & (~b | c) & c)
+{b: True, a: True, c: True}
+\end{verbatim}
