@@ -1,9 +1,26 @@
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage{url}
-\usepackage{hyperref}
-\usepackage{graphicx}
 \usepackage{caption}
+
+% for nice source code syntax highlighting, also provides Listing env
+\usepackage{minted}
+
+% this is required for all the \url{} commands in the bib file
+%\usepackage{hyperref}
+
+% for nice units
+\usepackage{siunitx}
+
+% for images: png, pdf, etc
+\usepackage{graphicx}
+
+% for nice table formatting, i.e. /toprule, /midrule, etc
+\usepackage{booktabs}
+
+% to allow for \verb++ declarations in captions.
+\usepackage{cprotect}
+
 \graphicspath{ {images/} }
 
 \begin{document}
@@ -39,9 +56,7 @@
 
 \input{features}
 
-\section{Other Projects that use SymPy}
-
-\input{other_projects_that_use_sympy}
+\input{domain_specific}
 
 \section{Comparison with other CAS}
 
@@ -53,7 +68,7 @@
 
 \section{References}
 
-\bibliographystyle{plain}
-\bibliography{paper.bib}
+\bibliography{paper}
+\bibliographystyle{unsrt}
 
 \end{document}

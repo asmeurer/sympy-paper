@@ -1,0 +1,88 @@
+SymPy includes several packages that allow users to solve domain specific
+problems. For example, a comprehensive physics package is included that is
+useful for solving problems in classical mechanics, optics, and quantum
+mechanics along with support for manipuating physical quantities with units.
+
+\subsection{Vector Algebra}
+
+The \verb|sympy.physics.vector| package provides reference frame, time, and
+space aware vector and dyadic objects that allow for three dimensional
+operations such as addition, subtraction, scalar multiplication, inner and
+outer products, cross products, etc. Both of these objects can be written in
+very compact notation that make it easy to express the vectors and dyadics in
+terms of multiple reference frames with arbitrarily defined relative
+orientations. The vectors are used to specify the positions, velocities, and
+accelerations of points, orientations, angular velocities, and angular
+accelerations of reference frames, and force and torques. The dyadics are
+essentially reference frame aware $3 \times 3$ tensors. The vector and dyadic
+objects can be used for any one-, two-, or three-dimensional vector algebra and
+they provide a strong framework for building physics and engineering tools.
+
+\begin{listing}
+  \begin{minted}{pycon}
+>>> from sympy import pi
+>>> from sympy.physics.vector import ReferenceFrame
+>>> A = ReferenceFrame('A')
+>>> B = ReferenceFrame('B')
+>>> C = ReferenceFrame('C')
+>>> B.orient(A, 'body', (pi, pi / 3, pi / 4), 'zxz')
+>>> C.orient(B, 'axis', (pi / 2, B.x))
+>>> v = 1 * A.x + 2 * B.z + 3 * C.y
+>>> v
+A.x + 2*B.z + 3*C.y
+>>> v.express(A)
+A.x + 5*sqrt(3)/2*A.y + 5/2*A.z
+  \end{minted}
+  \caption{
+    Python interpreter session showing how a vector is created using the
+    orthogonal unit vectors of three reference frames that are oriented with
+    respect to each other and the result of expressing the vector in the $A$
+    frame.
+    The $B$ frame is oriented with respect to the $A$ frame using Z-X-Z Euler
+    Angles of magnitude $\pi$, $\frac{\pi}{2}$, and
+    $\frac{\pi}{3}$\si{\radian},
+    respectively whereas the $C$ frame is oriented with respect to the $B$
+    frame through a simple rotation about the $B$ frame's X unit vector through
+    $\frac{\pi}{2}$\si{\radian}.}
+  \label{lis:physics-vector}
+\end{listing}
+
+\subsection{Classical Mechanics}
+
+The \verb|physics.mechanics| package utilizes the \verb|physics.vector| package
+to populate time aware particle and rigid body objects to fully describe the
+kinematics and kinetics of a rigid multi-body system. These objects store all
+of the information needed to derive the ordinary differential or differential
+algebraic equations that govern the motion of the system, i.e. the equations
+of motion. These equations of motion abide by Newton's laws of motion and can
+handle any arbitrary kinematical constraints or complex loads. The package
+offers two automated methods for formulating the equations of motion based on
+Lagrangian Dynamics~\cite{Lagrange1811} and Kane's Method~\cite{Kane1985}. Lastly, there
+are automated linearization routines for constrained dynamical
+systems based on ~\cite{Peterson2014}.
+
+\subsection{Quantum Mechanics}
+
+The \verb|sympy.physics.quantum| package provides quantum functions, states,
+operators, and computation of standard quantum models.
+
+% TODO : This needs some help from someone that knows something about quantum
+% physics. I wasn't able to understand much from the documentation.
+
+\subsection{Optics}
+
+The \verb|physics.optics| package provides Gaussian optics functions.
+
+% TODO : This needs some help from someone that knows something about optics.
+
+\subsection{Units}
+
+The \verb|physics.units| module provides around two hundred predefined prefixes
+and SI units that are commonly used in the sciences. Additionally, it provides
+the \verb|Unit| class which allows the user to define their own units.  These
+prefixes and units are multiplied by standard SymPy objects to make expressions
+unit aware, allowing for algebraic and calculus manipulations to be applied to
+the expressions while the units are tracked in the manipulations.  The units of
+the expressions can be easily converted to other desired units.  There is also
+a new units system in \verb|sympy.physics.unitsystems| that allows the user to
+work in specified unit systems.
